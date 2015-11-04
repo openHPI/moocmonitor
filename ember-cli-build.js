@@ -12,9 +12,14 @@ module.exports = function(defaults) {
   app.import('bower_components/AdminLTE/dist/css/skins/skin-black-light.css');
   app.import('bower_components/AdminLTE/dist/css/skins/skin-blue.css');
 
+  app.import('bower_components/AdminLTE/plugins/jvectormap/jquery-jvectormap-1.2.2.css');
+
   // js
   app.import('bower_components/bootstrap/dist/js/bootstrap.js');
   app.import('bower_components/AdminLTE/dist/js/app.js');
+
+  app.import('bower_components/AdminLTE/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js');
+  app.import('bower_components/AdminLTE/plugins/jvectormap/jquery-jvectormap-world-mill-en.js');
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //

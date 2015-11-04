@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['info-box'],
+  // classNames: ['col-lg-3' , 'col-xs-12'],
   text: 'valuename',
   icon: 'star-o',
   number: 0,
-  background: 'aqua'
+  color: 'aqua'
 });
