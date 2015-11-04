@@ -11,6 +11,14 @@
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <li>
+          <script type="text/javascript">
+          var ipc = window.require('ipc');
+          </script>
+          <a href="javascript:ipc.sendSync('synchronous-message', 'fullscreen');">
+            <i class="fa fa-arrows-alt"></i>
+          </a>
+        </li>
+        <li>
           <a href="#/alerts">
             <i class="fa fa-bell-o"></i>
             <span class="label label-warning">0</span>
