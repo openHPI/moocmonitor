@@ -14,12 +14,13 @@
 
     {{content-for 'head-footer'}}
   </head>
-  <body>
-    {{content-for 'body'}}
-    HALLO
-    <script src="assets/vendor.js"></script>
-    <script src="assets/web.js"></script>
+  <body class="skin-blue sidebar-mini">
+    <div class="wrapper">
+      {{content-for 'body'}}
+      <script src="assets/vendor.js"></script>
+      <script src="assets/web.js"></script>
 
-    {{content-for 'body-footer'}}
+      {{content-for 'body-footer'}}
+    </div>
   </body>
 </html>

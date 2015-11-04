@@ -1,8 +1,20 @@
 var BrowserWindow = require('browser-window');
 var app = require('app');
 var mainWindow = null;
+var menubar = require('menubar');
 
-app.on('window-all-closed', function onWindowAllClosed() {
+
+if (process.env.ELECTRON_ENV === 'development') {
+    //mainWindow.openDevTools();
+    url = 'http://localhost:5000';
+} else {
+    url = 'file://' + __dirname + '/dist/index.html';
+}
+var mb = menubar({'index': url})
+mb.on('ready', function ready (){
+  console.log('app is ready');
+})
+/**app.on('window-all-closed', function onWindowAllClosed() {
     if (process.platform !== 'darwin') {
         app.quit();
     }
@@ -16,14 +28,10 @@ app.on('ready', function onReady() {
 
     delete mainWindow.module;
 
-    if (process.env.ELECTRON_ENV === 'development') {
-        //mainWindow.openDevTools();
-        mainWindow.loadUrl('http://localhost:5000');
-    } else {
-        mainWindow.loadUrl('file://' + __dirname + '/dist/index.html');
-    }
+
 
     mainWindow.on('closed', function onClosed() {
         mainWindow = null;
     });
 });
+*/

@@ -4,8 +4,17 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     // Add options here
-  });
 
+  });
+  //css
+  app.import('bower_components/bootstrap/dist/css/bootstrap.css');
+  app.import('bower_components/AdminLTE/dist/css/AdminLTE.css');
+  app.import('bower_components/AdminLTE/dist/css/skins/skin-black-light.css');
+  app.import('bower_components/AdminLTE/dist/css/skins/skin-blue.css');
+
+  // js
+  app.import('bower_components/bootstrap/dist/js/bootstrap.js');
+  app.import('bower_components/AdminLTE/dist/js/app.js');
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //
