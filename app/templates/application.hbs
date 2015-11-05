@@ -1,5 +1,7 @@
 <!-- Content Header (Page header) -->
-
+<script type="text/javascript">
+var ipc = window.require('ipc');
+</script>
 <header class="main-header">
   <!-- Header Navbar: style can be found in header.less -->
   <a href="#/" class="logo"><b>MOOC</b>Monitor</a>
@@ -11,9 +13,6 @@
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <li>
-          <script type="text/javascript">
-          var ipc = window.require('ipc');
-          </script>
           <a href="javascript:ipc.sendSync('synchronous-message', 'fullscreen');">
             <i class="fa fa-arrows-alt"></i>
           </a>
@@ -22,6 +21,11 @@
           <a href="#/alerts">
             <i class="fa fa-bell-o"></i>
             <span class="label label-warning">0</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:ipc.sendSync('synchronous-message', 'exit');">
+            <i class="fa fa-sign-out"></i>
           </a>
         </li>
       </ul>
@@ -34,9 +38,11 @@
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <!-- Optionally, you can add icons to the links -->
-      <li class="active"><a href="#/"><i class="fa fa-link"></i> <span>Home</span></a></li>
-      <li><a href="#/alerts"><i class="fa fa-link"></i> <span>Alerts</span></a></li>
-
+      <li class="active"><a href="#/"><i class="fa fa-home"></i> <span>Home</span></a></li>
+      <li><a href="#/alerts"><i class="fa fa-bell"></i> <span>Alerts</span></a></li>
+      <li><a href="#/courses"><i class="fa fa-info"></i> <span>Kurse</span></a></li>
+      <li><a href="#/notificationa"><i class="fa fa-envelope"></i> <span>Notifications</span></a></li>
+      <li><a href="#/timeline"><i class="fa fa-clock-o"></i> <span>Timeline</span></a></li>
     </ul>
     <!-- /.sidebar-menu -->
   </section>

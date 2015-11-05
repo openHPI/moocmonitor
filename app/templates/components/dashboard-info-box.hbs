@@ -1,6 +1,13 @@
-<span class="info-box-icon bg-{{background}}"><i class="fa fa-{{icon}}"></i></span>
-<div class="info-box-content">
-  <span class="info-box-text">{{text}}</span>
-  <span class="info-box-number">{{count-upp endVal=number duration=1}}
+<div class="info-box ">
+  <span class="info-box-icon bg-{{background}}"><i class="fa fa-{{icon}}"></i></span>
+  <div class="info-box-content">
+    <span class="info-box-text">{{text}}</span>
+    <span class="info-box-number">{{count-upp endVal=number duration=1}}
     </span>
-</div><!-- /.info-box-content -->
+    {{#if link}}
+      <a href="#/{{link}}" class="small-box-footer">
+          More info <i class="fa fa-arrow-circle-right"></i>
+      </a>
+    {{/if}}
+  </div>
+</div>

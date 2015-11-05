@@ -9,6 +9,7 @@ Router.map(function() {
   this.route('home', {path: '/'});
   this.route('login');
   this.route('alerts');
+  this.route('timeline');
 });
 
 export default Router;
