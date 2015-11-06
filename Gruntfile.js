@@ -33,17 +33,17 @@ module.exports = function (grunt) {
                     x: 120,
                     y: 430,
                     type: 'file',
-                    path: './builds/storageexplorer-darwin-x64/moocmonitor.app'
+                    path: './builds/moocmonitor-darwin-x64/moocmonitor.app'
                 }]
             },
             target: {
-                dest: './builds/Mooc Monitor-darwin-x64/moocmonitor.dmg'
+                dest: './builds/moocmonitor-darwin-x64/moocmonitor.dmg'
             }
         },
         copy: {
             app: {
                 expand: true,
-                src: ['electron.js', 'package.json', 'dist/**', 'node_modules/fs-extra/**', 'node_modules/electron-gh-releases/**'],
+                src: ['electron.js', 'package.json', 'dist/**', 'node_modules/fs-extra/**', 'node_modules/menubar/**', 'node_modules/electron-gh-releases/**'],
                 dest: 'electronbuildcache/'
             },
             version_file: {
@@ -108,7 +108,7 @@ module.exports = function (grunt) {
         electron: {
             osx: {
                 options: {
-                    name: 'Mooc Monitor',
+                    name: 'moocmonitor',
                     platform: 'darwin',
                     arch: 'x64',
                     dir: 'electronbuildcache',
