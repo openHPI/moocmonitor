@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'web',
+    modulePrefix: 'moocmonitor',
     environment: environment,
     baseURL: '/',
     locationType: 'hash',

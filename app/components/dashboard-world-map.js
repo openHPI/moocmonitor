@@ -4,12 +4,14 @@ export default Ember.Component.extend({
   height: 300,
   data: [],
 
-  didInsertElement: function(){
+  didInsertElement: function() {
     this._super();
-    this.$().css({height:this.get('height')});
+    this.$().css({
+      height: this.get('height')
+    });
     var data = this.get('data');
-    if(!data || data.length===0){
-      this.set('_error',true);
+    if (!data || data.length === 0) {
+      this.set('_error', true);
       return;
     }
     this.$().vectorMap({
@@ -33,8 +35,7 @@ export default Ember.Component.extend({
         selected: {
           fill: 'yellow'
         },
-        selectedHover: {
-        }
+        selectedHover: {}
       },
       markerStyle: {
         initial: {
