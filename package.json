@@ -14,7 +14,7 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "Jan",
+  "author": "Jan Renz",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.1.2",
