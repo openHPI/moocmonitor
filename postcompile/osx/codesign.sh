@@ -15,7 +15,7 @@ export CODESIGN_ALLOCATE="/Applications/Xcode.app/Contents/Developer/Toolchains/
 #Run the following to get a list of certs
 # security find-identity
 app="$PWD/$1"
-identity="Felix Rieseberg"
+identity="Jan Renz"
 
 echo "### signing frameworks"
 codesign --deep --force --verify --verbose --sign "$identity" "$app/Contents/Frameworks/Electron Framework.framework/Electron Framework"
@@ -37,7 +37,7 @@ codesign --deep --force --verify --verbose --sign "$identity" "$app"
 
 
 echo "### Zipping app"
-ditto -c -k --sequesterRsrc --keepParent "./builds/Azure Storage Explorer-darwin-x64/Azure Storage Explorer.app/" ./builds/storageexplorer-osx.zip
+ditto -c -k --sequesterRsrc --keepParent "./builds/moocmonitor-darwin-x64/moocmonitor.app/" ./builds/moocmonitor-osx.zip
 
 echo "### verifying signature",
 codesign -vvvv -d "$app"

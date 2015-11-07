@@ -50,13 +50,7 @@ var handleSquirrelEvent = function () {
 
 var checkForGitHubRelease = function () {
     var gh_releases = require('electron-gh-releases');
-    var dialog = require('dialog');
-    dialog.showMessageBox({
-        type: 'info',
-        buttons: ['go for it!'],
-        title: 'Update Downloaded',
-        message: 'We found and downdloaded a new version of the MOOC Monitor! Once you close this dialog, i will automatically update and restart.'
-    });
+
     var options = {
         repo: 'openhpi/moocmonitor',
         currentVersion: app.getVersion()
@@ -99,7 +93,7 @@ mb.on('ready', function ready (){
   }
 
   // Check for update
-  checkForGitHubRelease();
+  //checkForGitHubRelease();
 
   //  console.log('app is ready');
   // In main process.
