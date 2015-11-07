@@ -11,14 +11,14 @@ var transition = function () {
     this.transition(
         this.fromRoute('alerts'),
         this.toRoute('timeline'),
-        this.use('toLeft'),
-        this.reverse('toRight')
+        this.use('crossFade'),
+        this.reverse('crossFade')
     );
     this.transition(
         this.fromRoute('home'),
         this.toRoute('timeline'),
-        this.use('toLeft'),
-        this.reverse('toRight')
+        this.use('crossFade'),
+        this.reverse('crossFade')
     );
 
 
