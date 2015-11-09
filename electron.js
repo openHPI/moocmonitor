@@ -85,7 +85,10 @@ if (process.env.ELECTRON_ENV === 'development') {
 } else {
     url = 'file://' + __dirname + '/dist/index.html';
 }
-var mb = menubar({'index': url, 'height': 800})
+var mb = menubar({  'index': url,
+                    'height': 800,
+                    'icon': './public/icon/menubar_icon.png'
+                  });
 mb.on('ready', function ready (){
 
   if (handleSquirrelEvent()) {
@@ -101,7 +104,7 @@ mb.on('ready', function ready (){
     //console.log(mb.window.isFullScreen());
     if (arg == 'fullscreen'){
       mb.window.setFullScreen(!mb.window.isFullScreen());
-      mb.window.reload();//a ahack cause ember seems to crash on resize
+      //mb.window.reload();//a ahack cause ember seems to crash on resize
     }
     if (arg == 'exit'){
       if (process.platform !== 'darwin') {

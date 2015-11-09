@@ -3,8 +3,8 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model: function() {
     return Ember.RSVP.hash({
-      active_users: Ember.$.getJSON('http://localhost:3000/api/v2/stats/active_users.json'),
-      all_users: Ember.$.getJSON('http://localhost:3000/api/v2/stats/global.json')
+      active_users: 10,//Ember.$.getJSON('http://localhost:3000/api/v2/stats/active_users.json'),
+      all_users: 1///Ember.$.getJSON('http://localhost:3000/api/v2/stats/global.json')
     });
   },
   polling_model_interval: null,
@@ -16,7 +16,7 @@ export default Ember.Route.extend({
     this.clearInterval();
     this.polling_model_interval = setInterval(() => {
       Ember.$.getJSON('http://localhost:3000/api/v2/stats/active_users.json').then(response => this.controller.set('model.active_users', response));
-    }, 5000);
+    }, 50000000);
   },
 
   /**
