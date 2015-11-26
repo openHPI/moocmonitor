@@ -84,13 +84,14 @@ var checkForGitHubRelease = function () {
 };
 
 if (process.env.ELECTRON_ENV === 'development') {
-    //mainWindow.openDevTools();
     url = 'http://localhost:5000';
+    //mainWindow.openDevTools();
 } else {
     url = 'file://' + __dirname + '/dist/index.html';
 }
 var mb = menubar({  'index': url,
                     'height': 800,
+                    'width': 550,
                     'preload': true,
                     'icon': './public/icon/menubar_icon.png'
                   });
@@ -109,8 +110,9 @@ mb.on('ready', function ready (){
     //console.log(mb.window.isFullScreen());
 
     if (arg == 'fullscreen'){
-      mb.window.setFullScreen(!mb.window.isFullScreen());
-      mb.window.reload();//a ahack cause ember seems to crash on resize
+      //mb.window.setFullScreen(!mb.window.isFullScreen());
+      mb.window.openDevTools();
+      //mb.window.reload();//a ahack cause ember seems to crash on resize
     }
     else if (arg == 'exit'){
       if (process.platform !== 'darwin') {
@@ -135,3 +137,4 @@ app.on('window-all-closed', function onWindowAllClosed() {
         app.quit();
     }
 });
+

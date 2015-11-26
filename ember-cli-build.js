@@ -20,6 +20,13 @@ module.exports = function(defaults) {
 
   app.import('bower_components/AdminLTE/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js');
   app.import('bower_components/AdminLTE/plugins/jvectormap/jquery-jvectormap-world-mill-en.js');
+
+  //d3
+  app.import('bower_components/d3/d3.min.js');
+  //globe stuff
+  app.import('bower_components/topojson/topojson.js');
+  app.import('bower_components/planetary.js/dist/planetaryjs.js');
+
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //

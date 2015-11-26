@@ -3,26 +3,27 @@ import Ember from 'ember';
 export default Ember.Component.extend({
 
   initGlobe: function () {
-    console.log('****');
+    var planetaryjs = window.planetaryjs;
     var canvas = document.getElementById('mapCanvas');
     var globe = planetaryjs.planet();
     // Load our custom `autorotate` plugin; see below.
     globe.loadPlugin(autorotate(10));
     // The `earth` plugin draws the oceans and the land; it's actually
     // a combination of several separate built-in plugins.
+    globe_get_data();
     globe.loadPlugin(planetaryjs.plugins.earth({
-      topojson: {file: '/js/world-110m.json'},
+      topojson: {file: './js/world-110m.json'},
       oceans: {fill: '#7FDEEA'},
       land: {fill: '#C9FFCB'},
       borders: {stroke: '#A3FAA6'}
     }));
-
+    globe_get_data();
     // The `pings` plugin draws animated pings on the globe.
     globe.loadPlugin(planetaryjs.plugins.pings());
     // The `zoom` and `drag` plugins enable
     // manipulating the globe with the mouse.
     globe.loadPlugin(planetaryjs.plugins.zoom({
-      scaleExtent: [50, 4000]
+      scaleExtent: [50, 2000]
     }));
     globe.loadPlugin(planetaryjs.plugins.drag({
       // Dragging the globe should pause the
@@ -35,17 +36,17 @@ export default Ember.Component.extend({
       }
     }));
     // Set up the globe's initial scale, offset, and rotation.
-    globe.projection.scale(500).translate([500, 500]).rotate([0, -10, 0]);
+    globe.projection.scale(250).translate([250, 250]).rotate([0, -10, 0]);
     setInterval(function () {
       globe_get_data()
     }, 60000);
     //initial load
-    globe_get_data();
+
     // Special code to handle high-density displays (e.g. retina, some phones)
     // In the future, Planetary.js will handle this by itself (or via a plugin).
     if (window.devicePixelRatio == 2) {
-      canvas.width = 2000;
-      canvas.height = 2000;
+      canvas.width = 1000;
+      canvas.height = 1000;
       context = canvas.getContext('2d');
       context.scale(2, 2);
     }
@@ -54,7 +55,7 @@ export default Ember.Component.extend({
     function globe_get_data() {
 
       $.ajax({
-        url: "/api/v2/stats/geo.json",
+        url: "https://open.sap.com/api/v2/stats/geo.json",
       }).done(function (result) {
         $.each(result, function (index, value) {
           var lat = value['lat'];
@@ -101,5 +102,6 @@ export default Ember.Component.extend({
         });//onDraw
       };//function planet
     };//function
-  }.on('didInsertElement')
+  }.on('didInsertElement'),
+  cleanUp:function(){}.on('willDestroyElement')
 });

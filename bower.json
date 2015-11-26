@@ -16,5 +16,8 @@
     "AdminLTE": "admin-lte#~2.3.2",
     "font-awesome": "~4.4.0",
     "countUp.js": "~1.6.0"
+  },
+  "devDependencies": {
+    "planetary.js": "~1.1.2"
   }
 }

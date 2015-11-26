@@ -2,6 +2,9 @@
 
 module.exports = function(environment) {
   var ENV = {
+    contentSecurityPolicy: {
+      'connect-src': "'self' https://open.sap.com https://open.hpi.de  http://localhost:3000",
+    },
     modulePrefix: 'moocmonitor',
     environment: environment,
     baseURL: '/',
