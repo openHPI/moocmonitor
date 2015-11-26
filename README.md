@@ -38,3 +38,8 @@ Planed Content of the app:
  - next dates (needs login)
 
  We could think about publishing this for all users with a smaller set of functions
+ 
+ ## Dev stuff
+ Release via grunt
+ 
+ 
