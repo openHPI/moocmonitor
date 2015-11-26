@@ -3,6 +3,10 @@ var app = require('app');
 var mainWindow = null;
 var menubar = require('menubar');
 var ipc = require('ipc');
+
+var ElectronSettings = require('electron-settings');
+var settings = new ElectronSettings();
+
 var handleSquirrelEvent = function () {
     if (process.platform != 'win32') {
         return false;
@@ -87,6 +91,7 @@ if (process.env.ELECTRON_ENV === 'development') {
 }
 var mb = menubar({  'index': url,
                     'height': 800,
+                    'preload': true,
                     'icon': './public/icon/menubar_icon.png'
                   });
 mb.on('ready', function ready (){
@@ -102,16 +107,24 @@ mb.on('ready', function ready (){
   // In main process.
   ipc.on('synchronous-message', function(event, arg) {
     //console.log(mb.window.isFullScreen());
+
     if (arg == 'fullscreen'){
       mb.window.setFullScreen(!mb.window.isFullScreen());
-      //mb.window.reload();//a ahack cause ember seems to crash on resize
+      mb.window.reload();//a ahack cause ember seems to crash on resize
     }
-    if (arg == 'exit'){
+    else if (arg == 'exit'){
       if (process.platform !== 'darwin') {
           app.quit();
       }else{
           mb.window.close();
       }
+    }else if (arg && typeof arg === 'object'){
+      if (arg['key'] == 'setting.set' && arg['value'] && arg['id']){
+          settings.set(arg['id'], arg['value']);
+      }
+      if (arg['key'] == 'setting.get' && arg['id']){
+          return settings.get(arg['id']);
+     }
     }
   });
 })

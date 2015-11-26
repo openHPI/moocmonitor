@@ -43,7 +43,7 @@ module.exports = function (grunt) {
         copy: {
             app: {
                 expand: true,
-                src: ['electron.js', 'package.json', 'dist/**', 'node_modules/fs-extra/**', 'node_modules/menubar/**', 'node_modules/electron-gh-releases/**'],
+                src: ['electron.js', 'package.json', 'dist/**', 'public/icon/**' , 'node_modules/fs-extra/**', 'node_modules/menubar/**', 'node_modules/electron-gh-releases/**'],
                 dest: 'electronbuildcache/'
             },
             version_file: {

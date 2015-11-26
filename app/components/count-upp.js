@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import CountUp from 'countUp';
+//import CountUp from 'countUp';
 export default Ember.Component.extend({
   classNames: ['ember-countup'],
   tagName: 'span',

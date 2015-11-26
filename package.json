@@ -64,6 +64,7 @@
   "dependencies": {
     "azure-storage": "^0.6.0",
     "electron-gh-releases": "^1.0.1",
-    "menubar": "^2.3.0"
+    "menubar": "^2.3.0",
+    "electron-settings": "^0.0.2"
   }
 }
