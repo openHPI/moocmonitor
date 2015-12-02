@@ -17,14 +17,20 @@ var ipc = window.require('ipc');
             <i class="fa fa-arrows-alt"></i>
           </a>
         </li>
-        <!--
+
         <li>
           {{#link-to "alerts" }}
             <i class="fa fa-bell-o"></i>
             <span class="label label-info">0</span>
           {{/link-to}}
         </li>
-        -->
+
+        <li>
+          <a href="javascript:ipc.sendSync('synchronous-message', 'devtools');">
+            DEV
+          </a>
+        </li>
+
         <li>
           {{#link-to "home" }}
             <i class="fa fa-home"></i>

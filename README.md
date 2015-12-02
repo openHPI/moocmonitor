@@ -40,6 +40,10 @@ Planed Content of the app:
  We could think about publishing this for all users with a smaller set of functions
  
  ## Dev stuff
- Release via grunt
  
+ Releasing on mac requires wind and mono
+ Release via grunt:
  
+   env RELEASE_VERSION=0.1 grunt createWinDevBuildWithInstaller      
+ 
+ See: https://github.com/atom/grunt-electron-installer

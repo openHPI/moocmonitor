@@ -2,7 +2,8 @@ module.exports = function (grunt) {
     // Load all grunt tasks matching the `grunt-*` pattern,
     // unless we're on Linux or Windows
     if (process.platform && process.platform === 'darwin') {
-        require('load-grunt-tasks')(grunt);
+        //require('load-grunt-tasks')(grunt);
+        require('load-grunt-tasks')(grunt, {scope: ['devDependencies', 'dependencies']});
     } else {
         require('load-grunt-tasks')(grunt, {scope: ['devDependencies', 'dependencies']});
     }
@@ -18,7 +19,7 @@ module.exports = function (grunt) {
     var cdnPath = process.env.RELEASE_VERSION ? process.env.RELEASE_VERSION : 'live';
 
     grunt.initConfig({
-        appdmg: {
+        'appdmg': {
             options: {
                 title: 'MOOC Monitor',
                 icon: './public/icon/ase.icns',
@@ -43,7 +44,44 @@ module.exports = function (grunt) {
         copy: {
             app: {
                 expand: true,
-                src: ['electron.js', 'package.json', 'dist/**', 'public/icon/**' , 'node_modules/fs-extra/**', 'node_modules/menubar/**', 'node_modules/electron-gh-releases/**'],
+                src: ['electron.js',
+                  'package.json',
+                  'dist/**',
+                  'public/icon/**' ,
+                  'node_modules/lodash*/**',
+                  'node_modules/abbrev/**' ,
+                  'node_modules/acorn/**' ,
+                  'node_modules/amdefine/**' ,
+                  'node_modules/ansi*/**' ,
+                  'node_modules/argparse/**' ,
+                  'node_modules/ast-types/**' ,
+                  'node_modules/async/**' ,
+                  'node_modules/balanced-match/**' ,
+                  'node_modules/c*/**' ,
+                  'node_modules/entities/**' ,
+                  'node_modules/es*/**' ,
+                  'node_modules/glob/**' ,
+                  'node_modules/inflight/**' ,
+                  'node_modules/inherits/**' ,
+                  'node_modules/linkify-it/**' ,
+                  'node_modules/j*/**' ,
+                  'node_modules/n*/**' ,
+                  'node_modules/m*/**' ,
+                  'node_modules/o*/**' ,
+                  'node_modules/p*/**' ,
+                  'node_modules/q*/**' ,
+                  'node_modules/s*/**' ,
+                  'node_modules/t*/**' ,
+                  'node_modules/u*/**' ,
+                  'node_modules/v*/**' ,
+                  'node_modules/w*/**' ,
+                  'node_modules/y*/**' ,
+                  'node_modules/rimraf/**' ,
+                  'node_modules/concat-map/**' ,
+                  'node_modules/brace-expansion/**' ,
+                  'node_modules/electron-settings/**'
+                 ],
+                 // 'node_modules/electron-gh-releases/**'],
                 dest: 'electronbuildcache/'
             },
             version_file: {
@@ -128,6 +166,7 @@ module.exports = function (grunt) {
                     dir: 'electronbuildcache',
                     out: 'builds',
                     version: '0.32.1',
+                    icon: 'public/icon/menubar_icon.ico',
                     overwrite: true,
                 }
             },
@@ -140,7 +179,7 @@ module.exports = function (grunt) {
                     out: 'builds',
                     version: '0.32.1',
                     overwrite: true,
-                    icon: 'public/icon/ase.ico',
+                    icon: 'public/icon/menubar_icon.ico',
                     asar: true,
                     'version-string': {
                         ProductName: 'Mooc Monitor',
@@ -285,7 +324,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', ['jshint', 'jscs', 'jsbeautifier:test']);
     grunt.registerTask('copyForBuild', ['copy:app', 'copy:version_file']);
     grunt.registerTask('prebuild', ['clean', 'exec:build', 'file-creator:version_file', 'copyForBuild']);
-    grunt.registerTask('osx', ['clean', 'prebuild', 'electron:osx', 'appdmg']);
+    grunt.registerTask('osx', ['clean', 'prebuild', 'electron:osx']);//appdmg
     grunt.registerTask('linux', ['prebuild', 'electron:linux']);
     grunt.registerTask('windows', ['prebuild', 'exec:flatten', 'electron:windowsWithIcon', 'create-windows-installer']);
     grunt.registerTask('compile', ['prebuild', 'electron:osx', 'appdmg', 'electron:linux', 'electron:windows', 'create-windows-installer']);
@@ -295,6 +334,8 @@ module.exports = function (grunt) {
     // otherwise application is tagged with git hash
     grunt.registerTask('createUnixDevBuild', ['prebuild', 'exec:flatten', 'electron:osx', 'electron:linux', 'zip:osx', 'zip:linux']);
     grunt.registerTask('deployUnixDevBuild', ['if:trusted-deploy-to-azure-cdn-unix']);
-    grunt.registerTask('createWinDevBuild', ['prebuild', 'exec:flatten', 'electron:windowsWithIcon', 'zip:windows']);
+    grunt.registerTask('createWinDevBuild', ['prebuild', 'exec:flatten', 'electron:windows', 'zip:windows']);
+    grunt.registerTask('createWinDevBuildWithInstaller', ['prebuild', 'exec:flatten', 'electron:windows', 'create-windows-installer']);
+
     grunt.registerTask('deployWinDevBuild', ['if:trusted-deploy-to-azure-cdn-windows']);
 };

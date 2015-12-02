@@ -8,14 +8,15 @@ export default Ember.Component.extend({
     var globe = planetaryjs.planet();
     // Load our custom `autorotate` plugin; see below.
     globe.loadPlugin(autorotate(10));
+
     // The `earth` plugin draws the oceans and the land; it's actually
     // a combination of several separate built-in plugins.
     globe_get_data();
     globe.loadPlugin(planetaryjs.plugins.earth({
       topojson: {file: './js/world-110m.json'},
-      oceans: {fill: '#7FDEEA'},
-      land: {fill: '#C9FFCB'},
-      borders: {stroke: '#A3FAA6'}
+      oceans: {fill: '#222222'},
+      land: {fill: '#111111'},
+      borders: {stroke: '#222222'}
     }));
     globe_get_data();
     // The `pings` plugin draws animated pings on the globe.
@@ -32,19 +33,19 @@ export default Ember.Component.extend({
         this.plugins.autorotate.pause();
       },
       onDragEnd: function () {
-        this.plugins.autorotate.resume();
+        //this.plugins.autorotate.resume();
       }
     }));
     // Set up the globe's initial scale, offset, and rotation.
     globe.projection.scale(250).translate([250, 250]).rotate([0, -10, 0]);
     setInterval(function () {
-      globe_get_data()
+      globe_get_data();
     }, 60000);
     //initial load
 
     // Special code to handle high-density displays (e.g. retina, some phones)
     // In the future, Planetary.js will handle this by itself (or via a plugin).
-    if (window.devicePixelRatio == 2) {
+    if (window.devicePixelRatio === 2) {
       canvas.width = 1000;
       canvas.height = 1000;
       context = canvas.getContext('2d');
@@ -60,8 +61,8 @@ export default Ember.Component.extend({
         $.each(result, function (index, value) {
           var lat = value['lat'];
           var lng = value['lon'];
-          var color = '#7B241C';
-          var angle = Math.min(value['count'], 5) / 20;
+          var color = '#f0ab00';
+          var angle = Math.min(value['count'], 10) / 5;
           globe.plugins.pings.add(lng, lat, {color: color, ttl: 240000, angle: angle});
         });
       });
