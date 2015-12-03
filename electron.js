@@ -3,19 +3,21 @@ var app = require('app');
 var mainWindow = null;
 var menubar = require('menubar');
 var ipc = require('ipc');
+var electron = require('electron');
 var notifier = require('node-notifier');
 var ElectronSettings = require('electron-settings');
 var settings = new ElectronSettings();
+var urlModule = require('url');
 var GhReleases = require('electron-gh-releases')
 var handleSquirrelEvent = function () {
-  notifier.notify({
-    title:"Plattform",
-    message: process.platform + '__',
-    sound: true,
-    wait: false,
-  }, function(error, response) {
-    console.log('Notification Error', response);
-  });
+  //notifier.notify({
+  //  title:"Plattform",
+  //  message: process.platform + '__',
+  //  sound: true,
+  //  wait: false,
+  //}, function(error, response) {
+  //  console.log('Notification Error', response);
+  //});
     if (process.platform !== 'win32') {
         return false;
     }
@@ -41,14 +43,14 @@ var handleSquirrelEvent = function () {
     };
 
     var squirrelEvent = process.argv[1];
-    notifier.notify({
-      title:"Squirrel event",
-      message: squirrelEvent + '__',
-      sound: true,
-      wait: false,
-    }, function(error, response) {
-      console.log('Notification Error', response);
-    });
+    //notifier.notify({
+    //  title:"Squirrel event",
+    //  message: squirrelEvent + '__',
+    //  sound: true,
+    //  wait: false,
+    //}, function(error, response) {
+    //  console.log('Notification Error', response);
+    //});
     switch (squirrelEvent) {
     case '--squirrel-install':
         install(app.quit);
@@ -97,14 +99,16 @@ var handleSquirrelEvent = function () {
 //        }
 //    });
 //};
-
+var url = '';
 if (process.env.ELECTRON_ENV === 'development') {
     url = 'http://localhost:5000';
     //mainWindow.openDevTools();
 } else {
     url = 'file://' + __dirname + '/dist/index.html';
 }
-var mb = menubar({  'index': url,
+     murl = "file:///Users/janrenz/code/mooc-monitor/desktop/test.html";
+     murl = 'http://127.0.0.1:3000/mooc_monitor?in_app=true';
+var mb = menubar({  'index': murl,
                     'height': 750,
                     'width': 550,
                     'preload': true,
@@ -112,10 +116,25 @@ var mb = menubar({  'index': url,
                     'icon': './public/icon/menubar_icon.png'
                   });
 mb.on('ready', function ready (){
+  // custom protocal handling
+  var protocol = electron.protocol;
+  protocol.registerHttpProtocol('moocmon',function(request, callback) {
 
+    //process incoming url
+    incoming_url = urlModule.parse(request.url, true);
+    if (incoming_url.host == 'settoken'){
+      console.log(incoming_url.query.token);
+      //Store token in settings
 
-
-  // Check for update
+    }
+    mb.window.loadURL(url);
+    callback('thanks');
+  }, function (error) {
+    if (error){
+      console.error('Failed to register protocol');
+    }
+  });
+    // Check for update
   //checkForGitHubRelease();
 
   //  console.log('app is ready');
@@ -166,14 +185,6 @@ mb.on('ready', function ready (){
 
 //check squirrel
 squirrel = handleSquirrelEvent();
-notifier.notify({
-  title:"Squirrel check",
-  message: squirrel + '__',
-  sound: true,
-  wait: false,
-}, function(error, response) {
-  console.log('Notification Error', response);
-});
 if (squirrel) {
   return;
 }
@@ -209,3 +220,4 @@ app.on('window-all-closed', function onWindowAllClosed() {
         app.quit();
     }
 });
+

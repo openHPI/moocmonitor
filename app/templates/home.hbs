@@ -1,12 +1,8 @@
 <div class="row">
   {{dashboard-info-box text="Current Users" icon='clock-o' number=model.active_users.count}}
-  <!--
-  {{dashboard-info-ox text="Total Users" icon='users' number=model.all_users.global_statistic.confirmed_users}}
-  {{dashboard-info-box text="Enrollments" icon='university' number=123456}}
-  {{dashboard-info-box text="New Forum entries" moreText='Show' icon='weixin' number=20 link="pinboard"}}
-  -->
-  <div class="col-md-12">
-    {{globe-activity}}
-  </div>
-
+  {{dashboard-info-box text="Current Users Activity" icon='clock-o' number=model.active_users.current_user_activity}}
+  {{dashboard-info-box text="Unique learners 24h" icon='clock-o' number=model.active_users.count_24h}}
+  {{dashboard-info-box text="Unique learners month" icon='clock-o' number=model.active_users.count_month}}
+  {{dashboard-info-box text="New Users (24h)" icon='users' number=model.all_users.global_statistic.confirmed_users_last_day}}
+  {{dashboard-info-box text="Total Users" icon='users' number=model.all_users.global_statistic.confirmed_users}}
 </div>

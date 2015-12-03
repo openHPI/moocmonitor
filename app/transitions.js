@@ -9,6 +9,12 @@ var transition = function () {
         this.reverse('toRight')
     );
     this.transition(
+      this.fromRoute('home'),
+      this.toRoute('globe'),
+      this.use('toLeft'),
+      this.reverse('toRight')
+    );
+    this.transition(
         this.fromRoute('alerts'),
         this.toRoute('timeline'),
         this.use('crossFade'),
