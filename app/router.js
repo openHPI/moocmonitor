@@ -13,6 +13,7 @@ Router.map(function() {
   this.route('alerts');
   this.route('timeline');
   this.route('globe');
+  this.route('settings');
 });
 
 export default Router;

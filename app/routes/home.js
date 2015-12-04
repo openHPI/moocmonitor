@@ -1,4 +1,5 @@
 import Ember from 'ember';
+var ipc = window.require("ipc");
 
 export default Ember.Route.extend({
   model: function() {
@@ -7,12 +8,17 @@ export default Ember.Route.extend({
       all_users: null
     });
   },
+  auth: null,
   polling_model_interval: null,
   polling_model_frequent_interval: null,
   /**
    Create the polling interval
    */
   activate: function() {
+    if (ipc !== 'undefined'){
+      this.auth = ipc.send('synchronous-message', {key: 'settings.get', id: 'token'});
+    }
+    // console.log(this.auth);
     this._super();
     this.getData();
     this.getFrequentData();
@@ -47,12 +53,13 @@ export default Ember.Route.extend({
 
   /**
    Get data
+   * TODO: nicer auth
    */
   getFrequentData: function() {
-    Ember.$.getJSON('https://open.sap.com/api/v2/stats/active_users.json').then(response => this.controller.set('model.active_users', response));
+    Ember.$.getJSON('https://open.sap.com/api/v2/stats/active_users.json?token='+this.auth).then(response => this.controller.set('model.active_users', response));
   },
   getData: function() {
-    Ember.$.getJSON('https://open.sap.com/api/v2/stats/global.json').then(response => this.controller.set('model.all_users', response));
+    Ember.$.getJSON('https://open.sap.com/api/v2/stats/global.json?token='+this.auth).then(response => this.controller.set('model.all_users', response));
   }
 
 });

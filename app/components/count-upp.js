@@ -7,12 +7,15 @@ export default Ember.Component.extend({
   didInsertElement() {
     this._insertAndStartCountUp();
   },
-
   changed: Ember.observer('startVal', 'decimals', 'duration', 'useEasing', 'useGrouping', 'separator', 'decimal', 'prefix', 'suffix', function() {
     this._insertAndStartCountUp();
   }),
   changed_value: Ember.observer('endVal', function() {
-    this._update();
+    if (this.countUp){
+      this._insertAndStartCountUp();
+    }else{
+      this._update();
+    }
   }),
   _update() {
     this.get('countUp').update(this.get('endVal'));

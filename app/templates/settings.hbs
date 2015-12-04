@@ -1,0 +1,12 @@
+<script type="text/javascript">
+    var ipc = window.require('ipc');
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <h2>Setting</h2>
+        <hr class="hr">
+        <button class="btn btn-md btn-primary" onClick="javascript:ipc.sendSync('synchronous-message', 'reset');">Reset</button>
+        <br />
+        Reset all settings. you will have to login in again
+    </div>
+</div>

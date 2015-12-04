@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   initGlobe: function () {
     var planetaryjs = window.planetaryjs;
     var canvas = document.getElementById('mapCanvas');
+    console.log(canvas);
     var globe = planetaryjs.planet();
     // Load our custom `autorotate` plugin; see below.
     globe.loadPlugin(autorotate(10));
@@ -18,7 +19,6 @@ export default Ember.Component.extend({
       land: {fill: '#111111'},
       borders: {stroke: '#222222'}
     }));
-    globe_get_data();
     // The `pings` plugin draws animated pings on the globe.
     globe.loadPlugin(planetaryjs.plugins.pings());
     // The `zoom` and `drag` plugins enable
@@ -48,17 +48,17 @@ export default Ember.Component.extend({
     if (window.devicePixelRatio === 2) {
       canvas.width = 1000;
       canvas.height = 1000;
-      context = canvas.getContext('2d');
-      context.scale(2, 2);
+      //context = canvas.getContext('2d');
+      //context.scale(2, 2);
     }
     // Draw that globe!
     globe.draw(canvas);
     function globe_get_data() {
 
-      $.ajax({
+      Ember.$.ajax({
         url: "https://open.sap.com/api/v2/stats/geo.json",
       }).done(function (result) {
-        $.each(result, function (index, value) {
+        Ember.$.each(result, function (index, value) {
           var lat = value['lat'];
           var lng = value['lon'];
           var color = '#f0ab00';
@@ -67,7 +67,7 @@ export default Ember.Component.extend({
         });
       });
 
-    };
+    }
     globe_get_data();
     // This plugin will automatically rotate the globe around its vertical
     // axis a configured number of degrees every second.
@@ -96,7 +96,7 @@ export default Ember.Component.extend({
             // to rotate the globe each time we draw it.
             var rotation = planet.projection.rotate();
             rotation[0] += degPerSec * delta / 1000;
-            if (rotation[0] >= 180) rotation[0] -= 360;
+            if (rotation[0] >= 180) {rotation[0] -= 360};
             planet.projection.rotate(rotation);
             lastTick = now;
           }//if

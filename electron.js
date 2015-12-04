@@ -9,6 +9,8 @@ var ElectronSettings = require('electron-settings');
 var settings = new ElectronSettings();
 var urlModule = require('url');
 var GhReleases = require('electron-gh-releases')
+
+var loginUrl = 'http://127.0.0.1:3000/mooc_monitor?in_app=true';
 var handleSquirrelEvent = function () {
   //notifier.notify({
   //  title:"Plattform",
@@ -106,9 +108,15 @@ if (process.env.ELECTRON_ENV === 'development') {
 } else {
     url = 'file://' + __dirname + '/dist/index.html';
 }
-     murl = "file:///Users/janrenz/code/mooc-monitor/desktop/test.html";
-     murl = 'http://127.0.0.1:3000/mooc_monitor?in_app=true';
-var mb = menubar({  'index': murl,
+token = settings.get('token');
+
+if (token !== 'undefined'){
+  go_to_url = url;
+}else{
+  go_to_url = loginUrl;
+}
+console.log('will call ' + go_to_url);
+var mb = menubar({  'index': go_to_url,
                     'height': 750,
                     'width': 550,
                     'preload': true,
@@ -123,9 +131,9 @@ mb.on('ready', function ready (){
     //process incoming url
     incoming_url = urlModule.parse(request.url, true);
     if (incoming_url.host == 'settoken'){
-      console.log(incoming_url.query.token);
+      //console.log(incoming_url.query.token);
       //Store token in settings
-
+      settings.set('token',incoming_url.query.token);
     }
     mb.window.loadURL(url);
     callback('thanks');
@@ -136,7 +144,7 @@ mb.on('ready', function ready (){
   });
     // Check for update
   //checkForGitHubRelease();
-
+  //mb.window.openDevTools();
   //  console.log('app is ready');
   // In main process.
   ipc.on('notify', function(event, notification) {
@@ -160,11 +168,17 @@ mb.on('ready', function ready (){
 
     if (arg == 'fullscreen'){
       mb.window.setFullScreen(!mb.window.isFullScreen());
-      //mb.window.openDevTools();
+
       mb.window.reload();//a ahack cause ember seems to crash on resize
     }
     else if (arg == 'devtools'){
       mb.window.openDevTools();
+    }
+    else if (arg == 'reset'){
+      //reset all values
+      settings.unset('token');
+      // later go to onboarding screen here
+      mb.window.loadURL(loginUrl);
     }
     else if (arg == 'exit'){
       if (process.platform !== 'darwin') {
@@ -175,8 +189,11 @@ mb.on('ready', function ready (){
     }else if (arg && typeof arg === 'object'){
       if (arg['key'] == 'setting.set' && arg['value'] && arg['id']){
           settings.set(arg['id'], arg['value']);
+
       }
       if (arg['key'] == 'setting.get' && arg['id']){
+        console.log('try to fecth token');
+        console.log(settings.get(arg['id']));
           return settings.get(arg['id']);
      }
     }

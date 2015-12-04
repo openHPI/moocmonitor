@@ -1,6 +1,6 @@
 <!-- Content Header (Page header) -->
 <script type="text/javascript">
-var ipc = window.require('ipc');
+  var ipc = window.require('ipc');
 </script>
 <header class="main-header">
   <!-- Header Navbar: style can be found in header.less -->
@@ -53,6 +53,7 @@ var ipc = window.require('ipc');
       <li class="active">{{#link-to "home" }}<i class="fa fa-home"></i> <span>Home</span>{{/link-to}}</li>
       <li>{{#link-to "alerts"}}<i class="fa fa-bell"></i> <span>Alerts</span>{{/link-to}}</li>
       <li>{{#link-to "globe"}}<i class="fa fa-globe"></i> <span>Globus</span>{{/link-to}}</li>
+      <li>{{#link-to "settings"}}<i class="fa fa-sliders"></i> <span>Settings</span>{{/link-to}}</li>
       <li><a href="javascript:ipc.sendSync('synchronous-message', 'devtools');">DEV</a> </li>
     </ul>
     <!-- /.sidebar-menu -->
