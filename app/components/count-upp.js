@@ -11,11 +11,7 @@ export default Ember.Component.extend({
     this._insertAndStartCountUp();
   }),
   changed_value: Ember.observer('endVal', function() {
-    if (this.countUp){
-      this._insertAndStartCountUp();
-    }else{
-      this._update();
-    }
+    this._update();
   }),
   _update() {
     this.get('countUp').update(this.get('endVal'));

@@ -19,12 +19,12 @@ module.exports = function (grunt) {
     var cdnPath = process.env.RELEASE_VERSION ? process.env.RELEASE_VERSION : 'live';
 
     grunt.initConfig({
-        'appdmg': {
+        appdmg: {
             options: {
                 title: 'MOOC Monitor',
-                icon: './public/icon/ase.icns',
+                icon: './public/icon/moocmonitor.icns',
                 background: './postcompile/osx/background.tiff',
-                'icon-size': 156,
+                "icon-size": 156,
                 contents: [{
                     x: 470,
                     y: 430,
@@ -58,12 +58,16 @@ module.exports = function (grunt) {
                   'node_modules/async/**' ,
                   'node_modules/balanced-match/**' ,
                   'node_modules/c*/**' ,
+                  'node_modules/debug/**' ,
                   'node_modules/entities/**' ,
                   'node_modules/es*/**' ,
+                  'node_modules/fs-*/**' ,
+                  'node_modules/electron*/**' ,
                   'node_modules/glob/**' ,
                   'node_modules/inflight/**' ,
                   'node_modules/inherits/**' ,
                   'node_modules/linkify-it/**' ,
+                  'node_modules/i*/**' ,
                   'node_modules/j*/**' ,
                   'node_modules/n*/**' ,
                   'node_modules/m*/**' ,
@@ -94,8 +98,8 @@ module.exports = function (grunt) {
                 appDirectory: 'builds/moocmonitor-win32-ia32',
                 outputDirectory: 'builds/installer32',
                 exe: 'moocmonitor.exe',
-                iconUrl: 'http://raw.githubusercontent.com/azure-storage/xplat/master/public/icon/ase.ico',
-                setupIcon: 'public/icon/ase.ico',
+                iconUrl: 'http://raw.githubusercontent.com/azure-storage/xplat/master/public/icon/icon_org.ico',
+                setupIcon: 'public/icon/icon_org.ico',
                 authors: 'Jan Renz',
                 loadingGif: 'postcompile/windows/installer.gif'
             },
@@ -103,8 +107,8 @@ module.exports = function (grunt) {
                 appDirectory: 'builds/moocmonitor-win32-x64',
                 outputDirectory: 'builds/installer64',
                 exe: 'moocmonitor.exe',
-                iconUrl: 'http://raw.githubusercontent.com/azure-storage/xplat/master/public/icon/ase.ico',
-                setupIcon: 'public/icon/ase.ico',
+                iconUrl: 'http://raw.githubusercontent.com/azure-storage/xplat/master/public/icon/icon_org.ico',
+                setupIcon: 'public/icon/icon_org.ico',
                 authors: 'Jan Renz',
                 loadingGif: 'postcompile/windows/installer.gif'
             }
@@ -151,11 +155,11 @@ module.exports = function (grunt) {
                     arch: 'x64',
                     dir: 'electronbuildcache',
                     out: 'builds',
-                    version: '0.32.1',
+                    version: '0.35.2',
                     overwrite: true,
-                    icon: 'public/icon/ase.icns',
-                    'app-version': getVersion(),
-                    'build-version': getVersion()
+                    icon: 'public/icon/moocmonitor.icns',
+                    "app-version": getVersion(),
+                    "build-version": getVersion()
                 }
             },
             windows: {
@@ -165,9 +169,9 @@ module.exports = function (grunt) {
                     arch: 'all',
                     dir: 'electronbuildcache',
                     out: 'builds',
-                    version: '0.32.1',
+                    version: '0.35.2',
                     icon: 'public/icon/menubar_icon.ico',
-                    overwrite: true,
+                    overwrite: true
                 }
             },
             windowsWithIcon: {
@@ -177,11 +181,11 @@ module.exports = function (grunt) {
                     arch: 'all',
                     dir: 'electronbuildcache',
                     out: 'builds',
-                    version: '0.32.1',
+                    version: '0.35.2',
                     overwrite: true,
                     icon: 'public/icon/menubar_icon.ico',
                     asar: true,
-                    'version-string': {
+                    "version-string": {
                         ProductName: 'Mooc Monitor',
                         ProductVersion: getVersion(),
                         FileDescription: 'Mooc Monitor',
@@ -196,7 +200,7 @@ module.exports = function (grunt) {
                     arch: 'ia32',
                     dir: 'electronbuildcache',
                     out: 'builds',
-                    version: '0.32.1',
+                    version: '0.35.2',
                     overwrite: true
                 }
             },
@@ -205,11 +209,11 @@ module.exports = function (grunt) {
             build: {
                 command: 'node ./node_modules/ember-cli/bin/ember build --environment=production'
             },
-            flatten: {
-              command: 'node ../node_modules/flatten-packages/bin/flatten .',
-              cwd: './electronbuildcache'
-            }
+          signosx: {
+            command: './postcompile/osx/codesign.sh builds/moocmonitor-darwin-x64/moocmonitor.app'
+          }
         },
+
         zip: {
             linux: {
                 cwd: './builds/moocmonitor-linux-ia32',
@@ -227,96 +231,15 @@ module.exports = function (grunt) {
                 dest: './builds/moocmonitor-win32-ia32/build.zip'
             }
         },
-        'if': {
-            'trusted-deploy-to-azure-cdn-windows': {
-                options: {
-                    test: function () {
-                        // these variables will only be valid and set during trusted builds
-                        var trustedBuild = (typeof process.env.AZURE_STORAGE_ACCOUNT === 'string' && typeof process.env.AZURE_STORAGE_ACCESS_KEY === 'string');
-                        return trustedBuild;
-                    }
-                },
-                ifTrue: ['azure-cdn-deploy:windows'],
-                ifFalse: []
-            },
-            'trusted-deploy-to-azure-cdn-unix': {
-                options: {
-                    test: function () {
-                        // these variables will only be valid and set during trusted builds
-                        var trustedBuild = (typeof process.env.AZURE_STORAGE_ACCOUNT === 'string' && typeof process.env.AZURE_STORAGE_ACCESS_KEY === 'string');
-                        return trustedBuild;
-                    }
-                },
-                ifTrue: ['azure-cdn-deploy:osx', 'azure-cdn-deploy:linux'],
-                ifFalse: []
-            }
-        },
-        // deploys live build to cdn
-        'azure-cdn-deploy': {
-            linux: {
-                options: {
-                    containerName: 'builds', // container name in blob
-                    folder: cdnPath + '/linux32', // path within container
-                    zip: false, // gzip files if they become smaller after zipping, content-encoding header will change if file is zipped
-                    deleteExistingBlobs: false, // true means recursively deleting anything under folder
-                    concurrentUploadThreads: 10, // number of concurrent uploads, choose best for your network condition
-                    metadata: {
-                        cacheControl: 'public, max-age=31530000', // cache in browser
-                        cacheControlHeader: 'public, max-age=31530000' // cache in azure CDN. As this data does not change, we set it to 1 year
-                    },
-                    testRun: false // test run - means no blobs will be actually deleted or uploaded, see log messages for details
-                },
-                src: [
-                    './build.zip'
-                ],
-                cwd: './builds/moocmonitor-linux-ia32/'
-            },
-            osx: {
-                options: {
-                    containerName: 'builds', // container name in blob
-                    folder: cdnPath + '/darwin64', // path within container
-                    zip: false, // gzip files if they become smaller after zipping, content-encoding header will change if file is zipped
-                    deleteExistingBlobs: false, // true means recursively deleting anything under folder
-                    concurrentUploadThreads: 10, // number of concurrent uploads, choose best for your network condition
-                    metadata: {
-                        cacheControl: 'public, max-age=31530000', // cache in browser
-                        cacheControlHeader: 'public, max-age=31530000' // cache in azure CDN. As this data does not change, we set it to 1 year
-                    },
-                    testRun: false // test run - means no blobs will be actually deleted or uploaded, see log messages for details
-                },
-                src: [
-                    './build.zip'
-                ],
-                cwd: './builds/moocmonitor-darwin-x64/'
-            },
-            windows: {
-                options: {
-                    containerName: 'builds', // container name in blob
-                    folder: cdnPath + '/win32', // path within container
-                    zip: false, // gzip files if they become smaller after zipping, content-encoding header will change if file is zipped
-                    deleteExistingBlobs: false, // true means recursively deleting anything under folder
-                    concurrentUploadThreads: 10, // number of concurrent uploads, choose best for your network condition
-                    metadata: {
-                        cacheControl: 'public, max-age=31530000', // cache in browser
-                        cacheControlHeader: 'public, max-age=31530000' // cache in azure CDN. As this data does not change, we set it to 1 year
-                    },
-                    testRun: false // test run - means no blobs will be actually deleted or uploaded, see log messages for details
-                },
-                src: [
-                    './build.zip'
-                ],
-                cwd: './builds/moocmonitor-win32-ia32/'
-            }
-        },
         'file-creator': {
-            version_file: {
-                '.version': function (fs, fd, done) {
-                    var githash = require('githash');
-                    var version = process.env.RELEASE_VERSION ? process.env.RELEASE_VERSION : githash();
-                    fs.writeSync(fd, version);
-                    done();
-                }
+          version_file: {
+            '.version': function (fs, fd, done) {
+              var githash = require('githash');
+              var version = process.env.RELEASE_VERSION ? process.env.RELEASE_VERSION : githash();
+              fs.writeSync(fd, version);
+              done();
             }
+          }
         },
         clean: ['./electronbuildcache', './dist', './builds'],
     });
@@ -324,18 +247,16 @@ module.exports = function (grunt) {
     grunt.registerTask('test', ['jshint', 'jscs', 'jsbeautifier:test']);
     grunt.registerTask('copyForBuild', ['copy:app', 'copy:version_file']);
     grunt.registerTask('prebuild', ['clean', 'exec:build', 'file-creator:version_file', 'copyForBuild']);
-    grunt.registerTask('osx', ['clean', 'prebuild', 'electron:osx']);//appdmg
+    grunt.registerTask('osx', ['clean', 'prebuild', 'electron:osx', 'exec:signosx', 'appdmg']);
     grunt.registerTask('linux', ['prebuild', 'electron:linux']);
-    grunt.registerTask('windows', ['prebuild', 'exec:flatten', 'electron:windowsWithIcon', 'create-windows-installer']);
-    grunt.registerTask('compile', ['prebuild', 'electron:osx', 'appdmg', 'electron:linux', 'electron:windows', 'create-windows-installer']);
+    grunt.registerTask('windows', ['prebuild', 'electron:windowsWithIcon', 'create-windows-installer']);
+    //grunt.registerTask('compile', ['prebuild', 'electron:osx', 'appdmg', 'electron:linux', 'electron:windows', 'create-windows-installer']);
 
     // Development Builds
     // To deploy a build with an official build number, set env var RELEASE_VERSION to release number
     // otherwise application is tagged with git hash
-    grunt.registerTask('createUnixDevBuild', ['prebuild', 'exec:flatten', 'electron:osx', 'electron:linux', 'zip:osx', 'zip:linux']);
-    grunt.registerTask('deployUnixDevBuild', ['if:trusted-deploy-to-azure-cdn-unix']);
-    grunt.registerTask('createWinDevBuild', ['prebuild', 'exec:flatten', 'electron:windows', 'zip:windows']);
-    grunt.registerTask('createWinDevBuildWithInstaller', ['prebuild', 'exec:flatten', 'electron:windows', 'create-windows-installer']);
+    grunt.registerTask('createUnixDevBuild', ['prebuild', 'electron:osx', 'electron:linux', 'zip:osx', 'zip:linux']);
+    grunt.registerTask('createWinDevBuild', ['prebuild','electron:windows', 'zip:windows']);
+    grunt.registerTask('createWinDevBuildWithInstaller', ['prebuild', 'electron:windows', 'create-windows-installer']);
 
-    grunt.registerTask('deployWinDevBuild', ['if:trusted-deploy-to-azure-cdn-windows']);
 };

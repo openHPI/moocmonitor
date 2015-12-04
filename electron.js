@@ -10,7 +10,10 @@ var settings = new ElectronSettings();
 var urlModule = require('url');
 var GhReleases = require('electron-gh-releases')
 
-var loginUrl = 'http://127.0.0.1:3000/mooc_monitor?in_app=true';
+var path = require('path')
+var fs = require('fs')
+
+var loginUrl = 'https://open.sap.com/mooc_monitor?in_app=true';
 var handleSquirrelEvent = function () {
   //notifier.notify({
   //  title:"Plattform",
@@ -54,16 +57,16 @@ var handleSquirrelEvent = function () {
     //  console.log('Notification Error', response);
     //});
     switch (squirrelEvent) {
-    case '--squirrel-install':
+      case '--squirrel-install':
         install(app.quit);
         return true;
-    case '--squirrel-updated':
+      case '--squirrel-updated':
         install(app.quit);
         return true;
-    case '--squirrel-obsolete':
+      case '--squirrel-obsolete':
         app.quit();
         return true;
-    case '--squirrel-uninstall':
+     case '--squirrel-uninstall':
         uninstall(app.quit);
         return true;
     }
@@ -110,24 +113,24 @@ if (process.env.ELECTRON_ENV === 'development') {
 }
 token = settings.get('token');
 
-if (token !== 'undefined'){
-  go_to_url = url;
-}else{
+  console.log(token);
+if (!token || token === 'undefined'){
   go_to_url = loginUrl;
+}else{
+  go_to_url = url;
 }
-console.log('will call ' + go_to_url);
-var mb = menubar({  'index': go_to_url,
-                    'height': 750,
-                    'width': 550,
-                    'preload': true,
-                    'showDockIcon': false,
-                    'icon': './public/icon/menubar_icon.png'
+
+var mb = menubar({  index: go_to_url,
+                    height: 750,
+                    width: 550,
+                    preload: true,
+                    showDockIcon: false,
+                    icon: path.join(__dirname, 'public', 'icon' ,'menubar_icon.png')
                   });
 mb.on('ready', function ready (){
   // custom protocal handling
   var protocol = electron.protocol;
   protocol.registerHttpProtocol('moocmon',function(request, callback) {
-
     //process incoming url
     incoming_url = urlModule.parse(request.url, true);
     if (incoming_url.host == 'settoken'){
@@ -168,7 +171,6 @@ mb.on('ready', function ready (){
 
     if (arg == 'fullscreen'){
       mb.window.setFullScreen(!mb.window.isFullScreen());
-
       mb.window.reload();//a ahack cause ember seems to crash on resize
     }
     else if (arg == 'devtools'){

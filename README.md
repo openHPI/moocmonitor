@@ -20,12 +20,11 @@ The user can select the endpoint and set his user token
 
 
 TODO:
-- Login and store token in app
+- Login and store token in app (done)
 - Append token header to all API calls if user logged in
 - Have a service that lets the user know if he is logged in or not
 - Fix ember crash on window going fullscreen
 - Auto Update
-- Move Repo to github.com
 
 
 Planed Content of the app:
@@ -47,3 +46,7 @@ Planed Content of the app:
    env RELEASE_VERSION=0.1 grunt createWinDevBuildWithInstaller      
  
  See: https://github.com/atom/grunt-electron-installer
+
+
+Signing
+ ./postcompile/osx/codesign.sh builds/moocmonitor-darwin-x64/moocmonitor.app 

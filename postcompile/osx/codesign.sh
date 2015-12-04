@@ -41,4 +41,4 @@ ditto -c -k --sequesterRsrc --keepParent "./builds/moocmonitor-darwin-x64/moocmo
 
 echo "### verifying signature",
 codesign -vvvv -d "$app"
-sudo spctl -a -vvvv "$app"
+#sudo spctl -a -vvvv "$app"
