@@ -61,9 +61,11 @@ module.exports = function (grunt) {
                   'node_modules/debug/**' ,
                   'node_modules/entities/**' ,
                   'node_modules/es*/**' ,
+                  'node_modules/ex*/**' ,
                   'node_modules/fs-*/**' ,
                   'node_modules/electron*/**' ,
                   'node_modules/glob/**' ,
+                  'node_modules/gro*/**' ,
                   'node_modules/inflight/**' ,
                   'node_modules/inherits/**' ,
                   'node_modules/linkify-it/**' ,
@@ -185,12 +187,8 @@ module.exports = function (grunt) {
                     overwrite: true,
                     icon: 'public/icon/menubar_icon.ico',
                     asar: true,
-                    "version-string": {
-                        ProductName: 'Mooc Monitor',
-                        ProductVersion: getVersion(),
-                        FileDescription: 'Mooc Monitor',
-                        ProductVersion: 'Mooc Monitor.exe'
-                    }
+                    "app_version": "0.1"
+
                 }
             },
             linux: {
@@ -245,8 +243,8 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('test', ['jshint', 'jscs', 'jsbeautifier:test']);
-    grunt.registerTask('copyForBuild', ['copy:app', 'copy:version_file']);
-    grunt.registerTask('prebuild', ['clean', 'exec:build', 'file-creator:version_file', 'copyForBuild']);
+    grunt.registerTask('copyForBuild', ['copy:app']);
+    grunt.registerTask('prebuild', ['clean', 'exec:build', 'copyForBuild']);
     grunt.registerTask('osx', ['clean', 'prebuild', 'electron:osx', 'exec:signosx', 'appdmg']);
     grunt.registerTask('linux', ['prebuild', 'electron:linux']);
     grunt.registerTask('windows', ['prebuild', 'electron:windowsWithIcon', 'create-windows-installer']);
